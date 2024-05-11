@@ -66,13 +66,14 @@ def log_in():
 def rent_game(username):
     clear_terminal()
     print("\nRent Games!")
-    print("\nHere's the list of available games: ")
+    print(f'Your current balance is {user_accounts[username]['balance']}$')
+    print("Here's the list of available games: \n")
     try:
         for game, game_info in game_library.items():
             print(f'{game} - copies {game_info["quantity"]} - rental cost {game_info["cost"]}$')
         rent_choice = input(str("Enter the title of the game you want to rent: "))
         if rent_choice == "":
-            logged_in_menu(username)
+            return
         if rent_choice in game_library:
             if game_library[rent_choice]["quantity"] >0:
                 game_price = game_library[rent_choice]["cost"]
@@ -83,9 +84,9 @@ def rent_game(username):
                     print(f'You have succesfully rented {rent_choice}.')
                     print(f'Your new Balance is: {user_accounts[username]['balance']}$.')
                     if game_price >= 2:
-                        points_earned = game_price/2
+                        points_earned = game_price//2
                         user_accounts[username]['points'] += points_earned
-                        print("\nYou earned one point!")
+                        print(f'You earned {points_earned} points!')
                 else:
                     print("\nInsufficient funds to rent the game.")
             else:
@@ -109,8 +110,10 @@ def return_game(username):
               print(game)
           return_choice = input(str("Enter the title of the game you want to return: "))
           if return_choice in user_inventory:
+             game_price = game_library[return_choice]['cost']
              game_library[return_choice]['quantity'] +=1
              user_inventory.remove(return_choice)
+             user_accounts[username]['balance'] += game_price
              print(f'\nYou have successfully returned {return_choice}.')
           elif input == "":
             return
