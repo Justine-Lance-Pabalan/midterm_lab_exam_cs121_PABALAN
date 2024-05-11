@@ -113,7 +113,7 @@ def top_up_account(username, amount):
     print("\nWelcome to top-up!")
     print("Top-up your User balance!")
     try:
-        amount = input(float("Enter the amount you want to top-up and add to your balance: ")))
+        amount = input(float("Enter the amount you want to top-up and add to your balance: "))
         if amount > 0:
             user_accounts[username]['balance'] +=amount
             print(f'\nYou have successfully topped-up/added {amount}$ into your account balance.')
@@ -217,59 +217,58 @@ def redeem_free_rental(username):
 
 # Function to handle user's logged-in menu
 def logged_in_menu(username):
-    print("\nWelcome to the Game Rental System!")
-    print("\n1) Display available games.")
-    print("\n2) Rent game.")
-    print("\n3) Return game.")
-    print("\n4) Top-up.")
-    print("\n5) Display inventory.")
-    print("\n6) Redeem.")
-    print("\n7) Log-out.")
+    while True:
+        print("\nWelcome to the Game Rental System!")
+        print("1) Display available games.")
+        print("2) Rent game.")
+        print("3) Return game.")
+        print("4) Top-up.")
+        print("5) Display inventory.")
+        print("6) Redeem.")
+        print("7) Log-out.")
 
-    try:
         choice = input(str("Enter the number of your choice: "))
-
-        if choice == "1":
-         display_available_games()
-        elif choice == "2":
-            rent_game()
-        elif choice == "3":
-            return_game()
-        elif choice == "4":
-            top_up_account()
-        elif choice == "5":
-            display_inventory()
-        elif choice == "6":
-            redeem_free_rental()
-        elif choice == "7":
-            print("\nLogging out...")
-        else: 
-            print("\nEnter only the number of your choice")
-    except ValueError:
-        print("\nEnter only a number")
+        try:
+            if choice == "1":
+                display_available_games()
+            elif choice == "2":
+                rent_game()
+            elif choice == "3":
+                return_game()
+            elif choice == "4":
+                top_up_account()
+            elif choice == "5":
+                display_inventory()
+            elif choice == "6":
+                redeem_free_rental()
+            elif choice == "7":
+                print("\nLogging out...")
+            else: 
+                print("\nEnter only the number of your choice")
+        except ValueError:
+            print("\nEnter only a number")
                                 
     
 # Main function to run the program
 def main():
-    print("\nWelcome to the Game Rental System")
-    print("\n1) Register.")
-    print("\n2) Log-in.")
-    print("\n3) Admin Log-in.")
-    print("\n4) Exit.")
-try:
-    choice = input(int("Enter the number of your choice: "))
+    while True:
+        print("\nWelcome to the Game Rental System")
+        print("1) Register.")
+        print("2) Log-in.")
+        print("3) Admin Log-in.")
+        print("4) Exit.\n")
 
-    if choice == "1":
-        register_user()
-    elif choice == "2":
-        log_in()
-    elif choice == "3":
-        admin_login()
-    elif choice == "4"
-        print("\nExiting the program")
-        exit
-except ValueError:
-        print("\nEnter only a number")
-
-if __name__ == "__main__":
-    main()
+        choice = input("Enter the number of your choice: ")
+        try:
+            if choice == "1":
+                register_user()
+            elif choice == "2":
+                log_in()
+            elif choice == "3":
+                admin_login()
+            elif choice == "4":
+                print("\nExiting the program")
+                exit
+        except ValueError:
+            print("\nEnter only a number")
+main()
