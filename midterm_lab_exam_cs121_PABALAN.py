@@ -1,3 +1,6 @@
+#Importing sys for the exit function of the program
+import sys
+
 # Dictionary to store game library with their quantities and rental costs
 game_library = {
     "Donkey Kong": {"quantity": 3, "cost": 2},
@@ -32,7 +35,7 @@ def register_user():
     balance = float(0)
     points = int(0)
     if len (password) <8:
-        print("Your password must atleast be 8 characters long.")
+        print("\nYour password must atleast be 8 characters long.")
     elif input == "":
         return
     else:
@@ -146,22 +149,22 @@ def admin_update_game(username):
     clear_terminal()
     print("\nUpdate games!")
     print("\nHere is the list of available games: ")
-    try: 
-        for game,game_info in game_library.items():
-            print(f'{game} - copies {game_info["quantity"]} - rental cost {game_info["cost"]}$')
+    for game,game_info in game_library.items():
+        print(f'{game} - copies {game_info["quantity"]} - rental cost {game_info["cost"]}$')
         game_name = input(str("Enter the title of the game you want to update: "))
-        if game_name in game_library:
-            new_quantity = input(int("Enter the new number of copies of the game: "))
-            new_cost = input(float("Enter the new cost of the game"))
-            game_library[game_name]['quantity'] = new_quantity
-            game_library[game_name]['cost'] = new_cost
-            print(f'\nYou have successfully updated {game_name} details.')
-        elif input == "":
-            return
-        else:
-            print("\nInvald title (Enter only the specific title of the game you want to update.")
-    except ValueError:
-        print("Enter only the specific title of the game you want to update")
+        try:
+            if game_name in game_library:
+                new_quantity = input(int("Enter the new number of copies of the game: "))
+                new_cost = input(float("Enter the new cost of the game"))
+                game_library[game_name]['quantity'] = new_quantity
+                game_library[game_name]['cost'] = new_cost
+                print(f'\nYou have successfully updated {game_name} details.')
+            elif input == "":
+                return
+            else:
+                print("\nInvald title (Enter only the specific title of the game you want to update.")
+        except ValueError:
+            print("Enter only the specific title of the game you want to update")
 
 # Function for admin login
 def admin_login():
@@ -182,14 +185,13 @@ def admin_menu():
     clear_terminal()
     while True:
         print("\nWelcome to the admin menu!")
-        print("\n1) Update game details.")
-        print("\n2) Log out.")
+        print("1) Update game details.")
+        print("2) Log out.\n")
 
+        choice = input("Enter the number of your choice: ")
         try:
-            choice = input(int("Enter the number of your choice: "))
-
             if choice == "1":
-                admin_update_game()
+                admin_update_game(admin_username)
             elif choice == "2":
                 print("\nLogging out...")
                 break
@@ -283,8 +285,8 @@ def main():
             elif choice == "3":
                 admin_login()
             elif choice == "4":
-                print("\nExiting the program")
-                exit
+                print("\nExiting the program...")
+                sys.exit()
         except ValueError:
             print("\nEnter only a number")
 main()
