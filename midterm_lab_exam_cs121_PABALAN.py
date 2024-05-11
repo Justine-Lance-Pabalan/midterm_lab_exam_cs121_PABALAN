@@ -13,6 +13,8 @@ game_library = {
 
 # Dictionary to store user accounts with their balances and points
 user_accounts = {}
+balance = float(0)
+points = 0
 
 # Admin account details
 admin_username = "admin"
@@ -36,8 +38,6 @@ def register_user():
     password = input(str("Input a password (must atleast be 8 characters long): "))
     if password == "":
         main()
-    balance = float(0)
-    points = int(0)
     if len (password) <8:
         print("\nYour password must atleast be 8 characters long.")
     else:
@@ -77,11 +77,10 @@ def rent_game(username):
             if game_library[rent_choice]["quantity"] >0:
                 game_price = game_library[rent_choice]["cost"]
                 if user_accounts[username]['balance'] >= game_price:
-                    game_name = game_library[rent_choice]
                     game_library[rent_choice]["quantity"] -=1
-                    user_accounts[username]['inventory'].append(game_name)
+                    user_accounts[username]['inventory'].append(rent_choice)
                     user_accounts[username]['balance'] -= game_price
-                    print(f'You have succesfully rented {game_name}.')
+                    print(f'You have succesfully rented {rent_choice}.')
                     print(f'Your new Balance is: {user_accounts[username]['balance']}$.')
                     if game_price >= 2:
                         points_earned = game_price/2
@@ -123,30 +122,33 @@ def return_game(username):
         print("Enter only the specific title of the game you want to return")
 
 # Function to top-up user account
-def top_up_account(username, amount):
+def top_up_account(username):
     clear_terminal()
-    print("\nWelcome to top-up!")
-    print("Top-up your User balance!")
-    try:
-        amount = input(float("Enter the amount you want to top-up and add to your balance: "))
-        if amount > 0:
-            user_accounts[username]['balance'] +=amount
-            print(f'\nYou have successfully topped-up/added {amount}$ into your account balance.')
-            print(f'\nYour new account balance is {user_accounts[username]['balance']}$.')
-        elif input == "":
-            return
-        else:
-            print("Invalid amount (Enter only a sufficient numeric value).")
-    except ValueError:
-        print("\nEnter only a number.")
+    while True:
+        print("\nWelcome to top-up!")
+        print("Top-up your User balance!")
+        try:
+            amount = float(input("Enter the amount you want to top-up and add to your balance: "))
+            if amount > 0:
+                user_accounts[username]['balance'] +=amount
+                print(f'\nYou have successfully topped-up/added {amount}$ into your account balance.')
+                print(f'\nYour new account balance is {user_accounts[username]['balance']}$.')
+                return
+            elif amount == "":
+                return
+            else:
+                print("Invalid amount (Enter only a sufficient numeric value).")
+        except ValueError:
+            print("\nEnter only a number.")
 
 # Function to display user's inventory
 def display_inventory(username):
     clear_terminal()
     print("\nHere is the list of the games you own: ")
     user_inventory = user_accounts[username]['inventory']
-    for game in user_inventory:
-        print(game)
+    if user_inventory: 
+        for game in user_inventory:
+            print(game)
     else:
         print("\nYou currently don't own a game.")
     
@@ -268,7 +270,7 @@ def logged_in_menu(username):
             elif choice == "3":
                 return_game(username)
             elif choice == "4":
-                top_up_account(username, amount)
+                top_up_account(username)
             elif choice == "5":
                 display_inventory(username)
             elif choice == "6":
