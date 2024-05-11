@@ -31,13 +31,15 @@ def register_user():
     clear_terminal()
     print("\nRegister to create an account!")
     username = input(str("Input a username: "))
+    if username == "":
+        main()
     password = input(str("Input a password (must atleast be 8 characters long): "))
+    if password == "":
+        main()
     balance = float(0)
     points = int(0)
     if len (password) <8:
         print("\nYour password must atleast be 8 characters long.")
-    elif input == "":
-        return
     else:
         user_accounts[username] = {'password':password, 'balance':balance, 'points':points, 'inventory':[]}
         print("\nYou have succesfully created an account!")
@@ -48,12 +50,14 @@ def log_in():
     clear_terminal()
     print("\nLog-in to your account!")
     username = input(str("Enter your username: "))
+    if username == "":
+        main()
     password = input(str("Enter your password: "))
+    if password == "":
+        main()
     if username in user_accounts and password == user_accounts[username]['password']:
         print("\nYou have successfully logged in to your account!")
         logged_in_menu(username)
-    elif input == "":
-        return
     else:
         print("Invalid Username/Password")
         return
@@ -67,6 +71,8 @@ def rent_game(username):
         for game, game_info in game_library.items():
             print(f'{game} - copies {game_info["quantity"]} - rental cost {game_info["cost"]}$')
         rent_choice = input(str("Enter the title of the game you want to rent: "))
+        if rent_choice == "":
+            logged_in_menu(username)
         if rent_choice in game_library:
             if game_library[rent_choice]["quantity"] >0:
                 game_price = game_library[rent_choice]["cost"]
@@ -147,24 +153,32 @@ def display_inventory(username):
 # Function for admin to update game details
 def admin_update_game(username):
     clear_terminal()
-    print("\nUpdate games!")
-    print("\nHere is the list of available games: ")
-    for game,game_info in game_library.items():
-        print(f'{game} - copies {game_info["quantity"]} - rental cost {game_info["cost"]}$')
-        game_name = input(str("Enter the title of the game you want to update: "))
+    while True:
+        print("\nUpdate games!")
+        print("\nHere is the list of available games: ")
+        for game,game_info in game_library.items():
+            print(f'{game} - copies {game_info["quantity"]} - rental cost {game_info["cost"]}$')
+        
         try:
+            game_name = input(str("Enter the title of the game you want to update: "))
+            if game_name == "":
+                admin_menu()
             if game_name in game_library:
-                new_quantity = input(int("Enter the new number of copies of the game: "))
-                new_cost = input(float("Enter the new cost of the game"))
-                game_library[game_name]['quantity'] = new_quantity
-                game_library[game_name]['cost'] = new_cost
+                new_quantity = input("Enter the new number of copies of the game: ")
+                if new_quantity == "":
+                    admin_menu()
+                new_cost = input("Enter the new cost of the game: ")
+                if new_quantity == "":
+                    admin_menu()
+                game_library[game_name]['quantity'] = int(new_quantity)
+                game_library[game_name]['cost'] = float(new_cost)
                 print(f'\nYou have successfully updated {game_name} details.')
-            elif input == "":
-                return
+                break
             else:
                 print("\nInvald title (Enter only the specific title of the game you want to update.")
         except ValueError:
             print("Enter only the specific title of the game you want to update")
+
 
 # Function for admin login
 def admin_login():
@@ -195,6 +209,7 @@ def admin_menu():
             elif choice == "2":
                 print("\nLogging out...")
                 break
+                main()
             else:
                 print("\nInvalid input. (Enter only the number of your choice).")
         except ValueError:
@@ -251,13 +266,13 @@ def logged_in_menu(username):
             elif choice == "2":
                 rent_game(username)
             elif choice == "3":
-                return_game()
+                return_game(username)
             elif choice == "4":
-                top_up_account()
+                top_up_account(username, amount)
             elif choice == "5":
-                display_inventory()
+                display_inventory(username)
             elif choice == "6":
-                redeem_free_rental()
+                redeem_free_rental(username)
             elif choice == "7":
                 print("\nLogging out...")
                 break
@@ -287,6 +302,8 @@ def main():
             elif choice == "4":
                 print("\nExiting the program...")
                 sys.exit()
+            else:
+                print("Input only a number")
         except ValueError:
             print("\nEnter only a number")
 main()
