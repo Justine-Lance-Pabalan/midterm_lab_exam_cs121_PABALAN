@@ -24,6 +24,7 @@ def display_available_games():
 
 # Function to register a new user
 def register_user():
+    clear_terminal()
     print("\nRegister to create an account!")
     username = input(str("Input a username: "))
     password = input(str("Input a password (must atleast be 8 characters long): "))
@@ -214,6 +215,10 @@ def redeem_free_rental(username):
             print("\nInsufficient number of points")
     except ValueError:
         print("\nEnter only the specific title of the game you want to redeem.")
+
+#Function to clear Terminal
+def clear_terminal():
+    print('\n'*50)
 
 # Function to handle user's logged-in menu
 def logged_in_menu(username):
