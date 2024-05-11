@@ -17,10 +17,11 @@ admin_password = "adminpass"
 
 # Function to display available games with their numbers and rental costs
 def display_available_games():
+    clear_terminal()
     print("\nWelcome to the Game Rental System!")
     print("\nHere is the list of available games: ")
     for game,game_info in game_library.items():
-         print(f'{game}. - copies {game_info["quantity"]} - rental cost {game_info["cost"]}$')
+         print(f'{game} - copies {game_info["quantity"]} - rental cost {game_info["cost"]}$')
 
 # Function to register a new user
 def register_user():
@@ -41,12 +42,13 @@ def register_user():
 
 # Function to login to your account
 def log_in():
+    clear_terminal()
     print("\nLog-in to your account!")
     username = input(str("Enter your username: "))
-    password = input(str("Enter your password"))
+    password = input(str("Enter your password: "))
     if username in user_accounts and password == user_accounts[username]['password']:
         print("\nYou have successfully logged in to your account!")
-        logged_in_menu()
+        logged_in_menu(username)
     elif input == "":
         return
     else:
@@ -55,11 +57,12 @@ def log_in():
     
 # Function to rent a game
 def rent_game(username):
+    clear_terminal()
     print("\nRent Games!")
     print("\nHere's the list of available games: ")
     try:
         for game, game_info in game_library.items():
-            print(f'{game}. - copies {game_info["quantity"]} - rental cost {game_info["cost"]}$')
+            print(f'{game} - copies {game_info["quantity"]} - rental cost {game_info["cost"]}$')
         rent_choice = input(str("Enter the title of the game you want to rent: "))
         if rent_choice in game_library:
             if game_library[rent_choice]["quantity"] >0:
@@ -88,6 +91,7 @@ def rent_game(username):
 
 # Function to return a game
 def return_game(username):
+    clear_terminal()
     print("\nReturn a game!")
     print("\nThe following is the list of the games you currently own: ")
     try: 
@@ -111,6 +115,7 @@ def return_game(username):
 
 # Function to top-up user account
 def top_up_account(username, amount):
+    clear_terminal()
     print("\nWelcome to top-up!")
     print("Top-up your User balance!")
     try:
@@ -128,6 +133,7 @@ def top_up_account(username, amount):
 
 # Function to display user's inventory
 def display_inventory(username):
+    clear_terminal()
     print("\nHere is the list of the games you own: ")
     user_inventory = user_accounts[username]['inventory']
     for game in user_inventory:
@@ -137,11 +143,12 @@ def display_inventory(username):
     
 # Function for admin to update game details
 def admin_update_game(username):
+    clear_terminal()
     print("\nUpdate games!")
     print("\nHere is the list of available games: ")
     try: 
         for game,game_info in game_library.items():
-            print(f'{game}. - copies {game_info["quantity"]} - rental cost {game_info["cost"]}$')
+            print(f'{game} - copies {game_info["quantity"]} - rental cost {game_info["cost"]}$')
         game_name = input(str("Enter the title of the game you want to update: "))
         if game_name in game_library:
             new_quantity = input(int("Enter the new number of copies of the game: "))
@@ -158,6 +165,7 @@ def admin_update_game(username):
 
 # Function for admin login
 def admin_login():
+    clear_terminal()
     print("\nLogin into an admin account!")
     admin_un = input(str("Enter your username: "))
     admin_pw = input(str("Enter your password: "))
@@ -171,6 +179,7 @@ def admin_login():
 
 # Admin menu
 def admin_menu():
+    clear_terminal()
     while True:
         print("\nWelcome to the admin menu!")
         print("\n1) Update game details.")
@@ -191,10 +200,11 @@ def admin_menu():
 
 # Function for users to redeem points for a free game rental
 def redeem_free_rental(username):
+    clear_terminal()
     print("\nRedeem a free game!")
     print("\nHere is the list of available games")
     for game,game_info in game_library.items():
-         print(f'{game}. - copies {game_info["quantity"]} - rental cost {game_info["cost"]}$')
+         print(f'{game} - copies {game_info["quantity"]} - rental cost {game_info["cost"]}$')
     try:
         if user_accounts[username]['points'] >= 3:
             game_choice = input(str("Enter the title of the game you want to redeem with your points: "))
@@ -218,7 +228,7 @@ def redeem_free_rental(username):
 
 #Function to clear Terminal
 def clear_terminal():
-    print('\n'*50)
+    print('\n'*10)
 
 # Function to handle user's logged-in menu
 def logged_in_menu(username):
@@ -237,7 +247,7 @@ def logged_in_menu(username):
             if choice == "1":
                 display_available_games()
             elif choice == "2":
-                rent_game()
+                rent_game(username)
             elif choice == "3":
                 return_game()
             elif choice == "4":
@@ -248,6 +258,7 @@ def logged_in_menu(username):
                 redeem_free_rental()
             elif choice == "7":
                 print("\nLogging out...")
+                break
             else: 
                 print("\nEnter only the number of your choice")
         except ValueError:
