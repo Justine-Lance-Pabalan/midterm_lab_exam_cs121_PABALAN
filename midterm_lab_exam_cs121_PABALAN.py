@@ -34,16 +34,16 @@ def register_user():
     print("\nRegister to create an account!")
     username = input(str("Input a username: "))
     if username == "":
-        main()
+        return
     password = input(str("Input a password (must atleast be 8 characters long): "))
     if password == "":
-        main()
+        return
     if len (password) <8:
         print("\nYour password must atleast be 8 characters long.")
     else:
         user_accounts[username] = {'password':password, 'balance':balance, 'points':points, 'inventory':[]}
         print("\nYou have succesfully created an account!")
-    main()
+        main()
 
 # Function to login to your account
 def log_in():
@@ -51,10 +51,10 @@ def log_in():
     print("\nLog-in to your account!")
     username = input(str("Enter your username: "))
     if username == "":
-        main()
+        return
     password = input(str("Enter your password: "))
     if password == "":
-        main()
+        return
     if username in user_accounts and password == user_accounts[username]['password']:
         print("\nYou have successfully logged in to your account!")
         logged_in_menu(username)
@@ -130,20 +130,21 @@ def top_up_account(username):
     while True:
         print("\nWelcome to top-up!")
         print("Top-up your User balance!")
+        print(f'You currently have {balance}$ in your account')
+        amount = float((input("Enter the amount you want to top-up and add to your balance: ")))
+        if amount == "":
+            return
         try:
-            amount = float(input("Enter the amount you want to top-up and add to your balance: "))
-            if amount > 0:
-                user_accounts[username]['balance'] +=amount
-                print(f'\nYou have successfully topped-up/added {amount}$ into your account balance.')
-                print(f'\nYour new account balance is {user_accounts[username]['balance']}$.')
-                return
-            elif amount == "":
-                return
-            else:
-                print("Invalid amount (Enter only a sufficient numeric value).")
+                if amount > 0:
+                    user_accounts[username]['balance'] +=amount
+                    print(f'\nYou have successfully topped-up/added {amount}$ into your account balance.')
+                    print(f'\nYour new account balance is {user_accounts[username]['balance']}$.')
+                    return
+                else:
+                    print("Invalid amount (Enter only a sufficient numeric value).")
         except ValueError:
-            print("\nEnter only a number.")
-
+                print("\nEnter only a number.")
+        
 # Function to display user's inventory
 def display_inventory(username):
     clear_terminal()
@@ -264,7 +265,7 @@ def logged_in_menu(username):
         print("6) Redeem.")
         print("7) Log-out.")
 
-        choice = input(str("Enter the number of your choice: "))
+        choice = (input("Enter the number of your choice: "))
         try:
             if choice == "1":
                 display_available_games()
@@ -284,7 +285,7 @@ def logged_in_menu(username):
             else: 
                 print("\nEnter only the number of your choice")
         except ValueError:
-            print("\nEnter only a number")
+            print("\nInvalid input (Enter only a number).")
                                 
     
 # Main function to run the program
@@ -296,7 +297,7 @@ def main():
         print("3) Admin Log-in.")
         print("4) Exit.\n")
 
-        choice = input("Enter the number of your choice: ")
+        choice = (input("Enter the number of your choice: "))
         try:
             if choice == "1":
                 register_user()
@@ -310,5 +311,5 @@ def main():
             else:
                 print("Input only a number")
         except ValueError:
-            print("\nEnter only a number")
+            print("\nInvalid input (Enter only a number).")
 main()
